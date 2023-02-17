@@ -1,3 +1,4 @@
 main
 .vscode/
 .gitattributes
+*.out

@@ -15,6 +15,9 @@ CanThread::CanThread(char* sInterface)
 
     if (bind(this->m_socket, (struct sockaddr *)&this->m_addr, sizeof(this->m_addr)) < 0)
         throw CanException(-2, "Error on socket association");
+
+    this->m_bStop = false;
+    this->m_tCallback = new std::thread(&CanThread::listener, this);
 }
 
 int CanThread::write_data(struct can_frame frame)
@@ -25,4 +28,33 @@ int CanThread::write_data(struct can_frame frame)
         nRet = -1;
 
     return nRet;
+}
+
+void CanThread::listener()
+{
+    
+    while (!this->m_bStop)
+    {
+        struct canfd_frame cfd;
+
+        int nBytes = read(this->m_socket, &cfd, CANFD_MTU);
+        if (nBytes > 0)
+        {
+            printf("[ ID ]: %d, [ PAYLOAD ]: ", cfd.can_id);
+            for (int i = 0; i < cfd.len; i++)
+                printf("%02X", cfd.data[i]);
+            printf("\n");
+        }
+
+    }
+
+}
+
+CanThread::~CanThread()
+{
+    if (this->m_tCallback->joinable())
+    {
+        this->stop(true);
+        this->m_tCallback->join();
+    }
 }

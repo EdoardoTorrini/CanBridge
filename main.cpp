@@ -15,8 +15,10 @@ int main(int argc, char** argv)
         sprintf((char *)frame.data, "suca");
 
         CanThread* ctTest = new CanThread("vcan0");
-
         ctTest->write_data(frame);
+        
+        sleep(20);
+        ctTest->stop(true);
 
     }
     catch(...) {

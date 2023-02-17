@@ -13,20 +13,25 @@
 #include <unistd.h>
 
 
-class CanThread : public std::thread
+class CanThread
 {
     public:
         CanThread(char* sInterface);
 
         int write_data(struct can_frame frame);
+        void stop(bool bStop) { this->m_bStop = bStop; }
+
+        ~CanThread();
 
     private:
         int m_socket;
         struct ifreq m_ifr;
         struct sockaddr_can m_addr;
 
-        void listener();
+        std::thread* m_tCallback;
+        bool m_bStop;
 
+        void listener();
 
 };
 
