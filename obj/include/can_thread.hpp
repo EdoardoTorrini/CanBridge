@@ -28,10 +28,13 @@ class CanThread
         struct ifreq m_ifr;
         struct sockaddr_can m_addr;
 
-        std::thread* m_tCallback;
         bool m_bStop;
 
+    protected:
+        virtual void notifier(struct can_frame frame) = 0;
         void listener();
+
+        std::thread* m_tCallback;
 
 };
 

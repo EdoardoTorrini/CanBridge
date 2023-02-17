@@ -1,7 +1,7 @@
 #include <iostream>
 
 // test 
-#include "obj/src/can_thread.cpp"
+#include "obj/src/steering.cpp"
 
 int main(int argc, char** argv)
 {
@@ -14,11 +14,11 @@ int main(int argc, char** argv)
         frame.can_dlc = 5;
         sprintf((char *)frame.data, "suca");
 
-        CanThread* ctTest = new CanThread("vcan0");
-        ctTest->write_data(frame);
+        Steering* ctSteer = new Steering("vcan0");
+        ctSteer->write_data(frame);
         
         sleep(20);
-        ctTest->stop(true);
+        ctSteer->stop(true);
 
     }
     catch(...) {

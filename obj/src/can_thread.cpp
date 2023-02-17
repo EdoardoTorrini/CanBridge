@@ -1,7 +1,7 @@
 #include "../include/can_thread.hpp"
 
 CanThread::CanThread(char* sInterface) 
-{   
+{
     this->m_socket = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (this->m_socket < 0)
         throw CanException(-1, "Error on socket define");
@@ -35,16 +35,11 @@ void CanThread::listener()
     
     while (!this->m_bStop)
     {
-        struct canfd_frame cfd;
+        struct can_frame cfd;
 
-        int nBytes = read(this->m_socket, &cfd, CANFD_MTU);
+        int nBytes = read(this->m_socket, &cfd, sizeof(struct can_frame));
         if (nBytes > 0)
-        {
-            printf("[ ID ]: %d, [ PAYLOAD ]: ", cfd.can_id);
-            for (int i = 0; i < cfd.len; i++)
-                printf("%02X", cfd.data[i]);
-            printf("\n");
-        }
+            this->notifier(cfd);
 
     }
 
