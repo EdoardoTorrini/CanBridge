@@ -4,7 +4,7 @@ CanThread::CanThread(char* sInterface)
 {
     this->m_socket = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (this->m_socket < 0)
-        throw CanException(-1, "Error on socket define");
+        throw CanException(SOCKET_ERR, "Error on socket define");
 
     strcpy(this->m_ifr.ifr_name, sInterface);
     ioctl(this->m_socket, SIOCGIFINDEX, &this->m_ifr);
@@ -14,7 +14,7 @@ CanThread::CanThread(char* sInterface)
     this->m_addr.can_ifindex = this->m_ifr.ifr_ifindex;
 
     if (bind(this->m_socket, (struct sockaddr *)&this->m_addr, sizeof(this->m_addr)) < 0)
-        throw CanException(-2, "Error on socket association");
+        throw CanException(BINDING_ERR, "Error on socket association");
 
     this->m_bStop = false;
     this->m_tCallback = new std::thread(&CanThread::listener, this);
@@ -49,7 +49,7 @@ CanThread::~CanThread()
 {
     if (this->m_tCallback->joinable())
     {
-        this->stop(true);
+        this->stop();
         this->m_tCallback->join();
     }
 }

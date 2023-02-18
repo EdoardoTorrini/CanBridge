@@ -6,7 +6,8 @@
 int main(int argc, char** argv)
 {
 
-    try {
+    try 
+    {
 
         struct can_frame frame;
 
@@ -17,11 +18,20 @@ int main(int argc, char** argv)
         Steering* ctSteer = new Steering("vcan0");
         ctSteer->write_data(frame);
         
-        sleep(20);
-        ctSteer->stop(true);
+        sleep(60);
+        ctSteer->stop();
 
     }
-    catch(...) {
+    catch(CanException &eErr)
+    {
+        printf("[ ERROR ]\n");
+        printf(
+            "[ MESSAGE ]: %s, [ CODE ]: %d\n", 
+            eErr.getMsg(), eErr.getStatusCode()
+        );
+    }
+    catch(...) 
+    {
         printf("cat vinia un beg in dal cul");
     }
 

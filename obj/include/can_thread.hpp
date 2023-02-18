@@ -19,7 +19,7 @@ class CanThread
         CanThread(char* sInterface);
 
         int write_data(struct can_frame frame);
-        void stop(bool bStop) { this->m_bStop = bStop; }
+        void stop() { this->m_bStop = true; }
 
         ~CanThread();
 
@@ -35,7 +35,15 @@ class CanThread
         void listener();
 
         std::thread* m_tCallback;
+        struct can_filter m_filter;
 
+};
+
+
+enum CanTypeError 
+{
+    SOCKET_ERR = -1,
+    BINDING_ERR = -2
 };
 
 
