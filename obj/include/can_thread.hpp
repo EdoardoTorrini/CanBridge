@@ -43,7 +43,9 @@ class CanThread
 enum CanTypeError 
 {
     SOCKET_ERR = -1,
-    BINDING_ERR = -2
+    BINDING_ERR = -2,
+
+    WRITE_ON_SCK_ERR = -3
 };
 
 

@@ -16,3 +16,20 @@ void Steering::notifier(struct can_frame frame)
         printf("\n");
     }
 }
+
+void Steering::setSteeringAngle(float fAngle)
+{
+    struct can_frame frame;
+    frame.can_id = STEERING_ANGLE;
+    frame.can_dlc = 4;
+
+    unsigned char data[4];
+    memcpy(data, &fAngle, sizeof(float));
+
+    for (int i = 0; i < sizeof(float); i++)
+        frame.data[i] = data[i];
+
+    int nRet = this->write_data(frame);
+    if (nRet < 0)
+        throw CanException(WRITE_ON_SCK_ERR, "Error on write STEERING ANGLE");
+}

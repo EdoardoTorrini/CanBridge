@@ -17,6 +17,9 @@ int main(int argc, char** argv)
 
         Steering* ctSteer = new Steering("vcan0");
         ctSteer->write_data(frame);
+
+        float angle = 3.14;
+        ctSteer->setSteeringAngle(angle);
         
         sleep(60);
         ctSteer->stop();
