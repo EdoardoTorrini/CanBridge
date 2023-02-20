@@ -38,8 +38,9 @@ void CanThread::listener()
         struct can_frame cfd;
 
         int nBytes = read(this->m_socket, &cfd, sizeof(struct can_frame));
-        if (nBytes > 0)
-            this->notifier(cfd);
+        if ((nBytes > 0) && (this->m_filter.can_id != 0) && (this->m_filter.can_mask != 0))
+            if ((cfd.can_id & this->m_filter.can_mask) == (this->m_filter.can_id & this->m_filter.can_mask))
+                this->notifier(cfd);
 
     }
 
