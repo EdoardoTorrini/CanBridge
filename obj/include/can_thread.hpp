@@ -16,8 +16,6 @@
 class CanThread
 {
     public:
-        CanThread(char* sInterface);
-
         int write_data(struct can_frame frame);
         void stop() { this->m_bStop = true; }
 
@@ -31,6 +29,7 @@ class CanThread
         bool m_bStop;
 
     protected:
+        CanThread(char* sInterface);
         virtual void notifier(struct can_frame frame) = 0;
         void listener();
 
