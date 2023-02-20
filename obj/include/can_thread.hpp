@@ -15,12 +15,7 @@
 
 class CanThread
 {
-    public:
-        int write_data(struct can_frame frame);
-        void stop() { this->m_bStop = true; }
-
-        ~CanThread();
-
+    //public:
     private:
         int m_socket;
         struct ifreq m_ifr;
@@ -30,8 +25,12 @@ class CanThread
 
     protected:
         CanThread(char* sInterface);
+        int write_data(struct can_frame frame);
+        void stop() { this->m_bStop = true; }
+
         virtual void notifier(struct can_frame frame) = 0;
         void listener();
+        ~CanThread();
 
         std::thread* m_tCallback;
         struct can_filter m_filter;
