@@ -1,3 +1,6 @@
+#ifndef STEERING_HPP
+#define STEERING_HPP
+
 #include "../src/can_thread.cpp"
 
 class Steering : public CanThread
@@ -6,8 +9,11 @@ class Steering : public CanThread
         Steering(char* sInterface);
         
         void setSteeringAngle(float fAngle);
+        float getCurrentAngle() { return this-> m_fCurrentAngle; }
 
     private:
+
+        float m_fCurrentAngle;
         void notifier(struct can_frame frame) override;
 
 };
@@ -33,3 +39,5 @@ enum SteeringID
     STEERING_CENTER_AUTOSET_OK,	
     CURRENT_ANGLE,	
 };
+
+#endif

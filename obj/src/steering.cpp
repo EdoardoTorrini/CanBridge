@@ -8,10 +8,27 @@ Steering::Steering(char* sInterface) : CanThread(sInterface)
 
 void Steering::notifier(struct can_frame frame)
 {
-    printf("[ ID ]: %d, [ PAYLOAD ]: ", frame.can_id);
+    printf("[ STEERING ] -> [ ID ]: %d, [ PAYLOAD ]: ", frame.can_id);
     for (int i = 0; i < frame.can_dlc; i++)
         printf("%02X", frame.data[i]);
     printf("\n");
+
+    switch (frame.can_id)
+    {
+        case CURRENT_ANGLE:
+
+            char data[sizeof(float)];
+            for (unsigned int i = 0; i < frame.can_dlc; i++)
+                data[i] = frame.data[i];
+            this->m_fCurrentAngle = (float)atof(data);
+
+            break;
+        
+        default:
+            throw CanException(RECIVE_CAN_ERR, "RECIVE a message on STEERING with wrong ID");
+            break;
+    }
+
 }
 
 void Steering::setSteeringAngle(float fAngle)
@@ -23,7 +40,7 @@ void Steering::setSteeringAngle(float fAngle)
     unsigned char data[4];
     memcpy(data, &fAngle, sizeof(float));
 
-    for (int i = 0; i < sizeof(float); i++)
+    for (unsigned int i = 0; i < sizeof(float); i++)
         frame.data[i] = data[i];
 
     int nRet = this->write_data(frame);

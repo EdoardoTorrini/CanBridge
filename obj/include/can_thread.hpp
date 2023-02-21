@@ -12,11 +12,17 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
+#ifndef CAN_THREAD_HPP
+#define CAN_THREAD_HPP
 
 class CanThread
 {
-    //public:
+    public:
+    
+        void stop() { this->m_bStop = true; }
+
     private:
+
         int m_socket;
         struct ifreq m_ifr;
         struct sockaddr_can m_addr;
@@ -24,12 +30,13 @@ class CanThread
         bool m_bStop;
 
     protected:
-        CanThread(char* sInterface);
-        int write_data(struct can_frame frame);
-        void stop() { this->m_bStop = true; }
 
+        CanThread(char* sInterface);
+
+        int write_data(struct can_frame frame);
         virtual void notifier(struct can_frame frame) = 0;
         void listener();
+
         ~CanThread();
 
         std::thread* m_tCallback;
@@ -43,7 +50,8 @@ enum CanTypeError
     SOCKET_ERR = -1,
     BINDING_ERR = -2,
 
-    WRITE_ON_SCK_ERR = -3
+    WRITE_ON_SCK_ERR = -3,
+    RECIVE_CAN_ERR = -4
 };
 
 
@@ -64,3 +72,5 @@ class CanException : public std::exception
         std::string m_sMsg;
     
 };
+
+#endif

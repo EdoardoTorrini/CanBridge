@@ -1,6 +1,7 @@
 #include <iostream>
 
 // test 
+#include "obj/src/res.cpp"  
 #include "obj/src/steering.cpp"
 
 int main(int argc, char** argv)
@@ -14,13 +15,19 @@ int main(int argc, char** argv)
         frame.can_id = 0x654;
         frame.can_dlc = 5;
         sprintf((char *)frame.data, "suca");
-
+        
+        Res* ctRes = new Res("vcan0");
         Steering* ctSteer = new Steering("vcan0");
 
-        float angle = 3.14;
-        ctSteer->setSteeringAngle(angle);
+
+        // float angle = 3.14;
+        // ctSteer->setSteeringAngle(angle);
+        // ctRes->setPowerOn();
         
         sleep(60);
+
+        ctSteer->stop();
+        ctRes->stop();
     }
     catch(CanException &eErr)
     {
