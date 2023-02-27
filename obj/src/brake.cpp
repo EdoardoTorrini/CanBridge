@@ -57,60 +57,21 @@ void Brake::notifier(struct can_frame frame)
 }
 
 
-float Brake::getProportionalErrorLeftX()
+
+/*
+void Brake::getZeroPressureAutoset()
 {
-    return this->m_fProportionalErrorLeftX;
-}
 
-uint32_t Brake::getProportionalErrorLeftY()
-{   
-    return this->m_uiProportionalErrorLeftY;
 }
-
-float Brake::getProportionalErrorRightX()
+bool Brake::getZeroPressureAutosetOK()
 {
-    return this->m_fProportionalErrorRightX;
-}
 
-uint32_t Brake::getProportionalErrorRightY()
+}
+void Brake::checkAbsState()
 {
-    return this->m_uiProportionalErrorRightY;
+    
 }
-
-float Brake::getRiseCutoffFrequency()
-{
-    return this->m_fRiseCutoffFrequency;
-}
-
-// void Brake::getZeroPressureAutoset()
-// {
-
-// }
-
-// bool Brake::getZeroPressureAutosetOK()
-// {
-
-// }
-
-float Brake::getCurrentPressure()
-{
-    return this->m_fCurrentPressure;
-}
-
-float Brake::getMaxPressure()
-{
-    return this->m_fMaxPressure;
-}
-
-float Brake::getTargetPressure()
-{
-    return this->m_fTargetPressure;
-}
-
-// void Brake::checkAbsState()
-// {
-
-// }
+ */
 
 void Brake::setBreakingPercentage(float fBreakingPerc)
 {

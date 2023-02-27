@@ -4,16 +4,49 @@ class Brake : public CanThread
 {
     public:
         Brake(char* sInterface);
-        float getProportionalErrorLeftX();
-        uint32_t getProportionalErrorLeftY();
-        float getProportionalErrorRightX();
-        uint32_t getProportionalErrorRightY();
-        float getRiseCutoffFrequency();
-        float getCurrentPressure();
-        float getMaxPressure();
-        float getTargetPressure();
+
         void setBreakingPercentage(float bPerc);
         char* dataToChar(struct can_frame frame);
+
+        float Brake::getCurrentPressure()
+        {
+            return this->m_fCurrentPressure;
+        }
+
+        float Brake::getMaxPressure()
+        {
+            return this->m_fMaxPressure;
+        }
+
+        float Brake::getTargetPressure()
+        {
+            return this->m_fTargetPressure;
+        }
+
+        float Brake::getProportionalErrorLeftX()
+        {
+            return this->m_fProportionalErrorLeftX;
+        }
+
+        uint32_t Brake::getProportionalErrorLeftY()
+        {   
+            return this->m_uiProportionalErrorLeftY;
+        }
+
+        float Brake::getProportionalErrorRightX()
+        {
+            return this->m_fProportionalErrorRightX;
+        }
+
+        uint32_t Brake::getProportionalErrorRightY()
+        {
+            return this->m_uiProportionalErrorRightY;
+        }
+
+        float Brake::getRiseCutoffFrequency()
+        {
+            return this->m_fRiseCutoffFrequency;
+        }
 
         //void getZeroPressureAutoset(); 
         //bool getZeroPressureAutosetOK();
