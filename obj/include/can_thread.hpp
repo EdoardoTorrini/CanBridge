@@ -37,6 +37,9 @@ class CanThread
         virtual void notifier(struct can_frame frame) = 0;
         void listener();
 
+        template<typename T>
+        T convertCanFrame(struct can_frame frame);
+
         ~CanThread();
 
         std::thread* m_tCallback;

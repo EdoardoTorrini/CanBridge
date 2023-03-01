@@ -46,6 +46,23 @@ void CanThread::listener()
 
 }
 
+template<typename T>
+T CanThread::convertCanFrame(struct can_frame frame)
+{
+    unsigned char cFrame[sizeof(T)];
+    int i, j = sizeof(T) - 1;
+    T tRet;
+
+    for(i = 0; i < sizeof(T); i++)
+    {
+        cFrame[i] = frame.data[j];
+        j --;
+    }
+    tRet = *(T*)&cFrame;
+
+    return tRet;
+}
+
 CanThread::~CanThread()
 {
     if (this->m_tCallback->joinable())
