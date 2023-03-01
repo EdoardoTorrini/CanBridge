@@ -8,42 +8,42 @@ class Brake : public CanThread
         void setBreakingPercentage(float bPerc);
         char* dataToChar(struct can_frame frame);
 
-        float Brake::getCurrentPressure()
+        float getCurrentPressure()
         {
             return this->m_fCurrentPressure;
         }
 
-        float Brake::getMaxPressure()
+        float getMaxPressure()
         {
             return this->m_fMaxPressure;
         }
 
-        float Brake::getTargetPressure()
+        float getTargetPressure()
         {
             return this->m_fTargetPressure;
         }
 
-        float Brake::getProportionalErrorLeftX()
+        float getProportionalErrorLeftX()
         {
             return this->m_fProportionalErrorLeftX;
         }
 
-        uint32_t Brake::getProportionalErrorLeftY()
+        uint32_t getProportionalErrorLeftY()
         {   
             return this->m_uiProportionalErrorLeftY;
         }
 
-        float Brake::getProportionalErrorRightX()
+        float getProportionalErrorRightX()
         {
             return this->m_fProportionalErrorRightX;
         }
 
-        uint32_t Brake::getProportionalErrorRightY()
+        uint32_t getProportionalErrorRightY()
         {
             return this->m_uiProportionalErrorRightY;
         }
 
-        float Brake::getRiseCutoffFrequency()
+        float getRiseCutoffFrequency()
         {
             return this->m_fRiseCutoffFrequency;
         }
