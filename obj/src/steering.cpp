@@ -8,6 +8,7 @@ Steering::Steering(char* sInterface) : CanThread(sInterface)
 
 void Steering::notifier(struct can_frame frame)
 {
+    int j = frame.can_dlc - 1;
     printf("[ STEERING ] -> [ ID ]: %d, [ PAYLOAD ]: ", frame.can_id);
     for (int i = 0; i < frame.can_dlc; i++)
         printf("%02X", frame.data[i]);
@@ -18,9 +19,12 @@ void Steering::notifier(struct can_frame frame)
         case CURRENT_ANGLE:
 
             char data[sizeof(float)];
-            for (unsigned int i = 0; i < frame.can_dlc; i++)
-                data[i] = frame.data[i];
-            this->m_fCurrentAngle = (float)atof(data);
+            for (int i = 0; i < sizeof(float); i ++)
+            {
+                data[i] = frame.data[j];
+                j --;
+            }
+            this->m_fCurrentAngle = *(float*)&data;
 
             break;
         

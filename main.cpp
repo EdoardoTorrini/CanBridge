@@ -24,7 +24,7 @@ int main(int argc, char** argv)
         // ctSteer->setSteeringAngle(angle);
         // ctRes->setPowerOn();
         
-        sleep(60);
+        sleep(120);
 
         ctSteer->stop();
         ctRes->stop();
