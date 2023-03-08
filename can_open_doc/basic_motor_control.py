@@ -1,17 +1,16 @@
 import canopen
 import time
 import sys, tty, termios
+from os import path
 
-EDS_FILE = "maxon_motor_IDX_0170h_6650h_0000h_0000h.eds"        #EDS file.
+EDS_FILE = "/home/etorrini/GitHub/Progetti/CanBridge/can_open_doc/maxon_motor_IDX_0170h_6650h_0000h_0000h.eds"        #EDS file.
 MOLTIPLICATORE = 10
-
-
 
 def initCANopen(BaudRate = 1e6):    #Default Parameter.
 # M: Initialize CANopen.                                                    :M #
         nw = canopen.Network()   #NetWork.
         nw.connect(channel='can0', bustype='socketcan', bitrate=1000000)
-        node = nw.add_node(1, EDS_FILE)
+        node = nw.add_node(0x01, EDS_FILE) # test con 12
         return nw,node
 
 def PrintDictionary(node):
@@ -32,14 +31,18 @@ def getchartest():
 
 
 if __name__=="__main__":
+
+	if not path.exists(EDS_FILE):
+		print(f"[ FILE ]: {EDS_FILE} not found")
+	
 	network, s60 = initCANopen()
 
-	PrintDictionary(s60)
+	# PrintDictionary(s60)
 
 	s60.nmt.state = 'OPERATIONAL'
 	print("Gone Operational")
 	# Write Node-ID
-	# s60.sdo.download(0x2000,0,b'\x01')
+	s60.sdo.download(0x2000,0,b'\x01')
 	# Read actual position
 	# print(int.from_bytes(s60.sdo.upload(0x6064,0), "little"))
 	# # Read Node-ID
@@ -47,10 +50,17 @@ if __name__=="__main__":
 	# print(int.from_bytes(s60.sdo.upload(0x6061,0), "little"))
 
 	# Enable device
-	s60.sdo.download(0x6060,0,b'\x01')
-	s60.sdo.download(0x6040,0,b'\x06\x00')
-	s60.sdo.download(0x6040,0,b'\x0F\x00')
+	try:
+		# attiva il motore
+		s60.sdo.download(0x6060,0,b'\x01')
+		s60.sdo.download(0x6040,0,b'\x06\x00')
 
+		# set della modalità: 0x7F 0x5F
+		s60.sdo.download(0x6040,0,b'\x0F\x00')
+
+	except Exception as eErr:
+		print(f"[ ERROR ]: {eErr}")
+	
 	pos = 0
 	while True:
 		a = getchartest()
@@ -74,6 +84,7 @@ if __name__=="__main__":
 			s60.sdo.download(0x607A,0,(pos).to_bytes(4, 'little', signed=True))
 			# Control Motor
 			s60.sdo.download(0x6040,0,b'\x0F\x00')
+			# e allora PD
 			s60.sdo.download(0x6040,0,b'\x1F\x00')
 		if a == 'q':
 			# Disable Device
