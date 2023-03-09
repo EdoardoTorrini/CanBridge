@@ -40,7 +40,7 @@ class CanThread
         template<typename T>
         T convertCanFrame(struct can_frame frame);
 
-        ~CanThread();
+        virtual ~CanThread();
 
         std::thread* m_tCallback;
         struct can_filter m_filter;
